@@ -5,7 +5,7 @@ minetest.register_node("chocolate:cocoa_plant", {
   inventory_image = "chocolate_cocoa_seeds.png",
   sunlight_propogates = true,
   walkable = false,
-  waving = 1,
+  -- waving = 1,
   paramtype = "light",
   drop = "chocolate:cocoa_plant",
   groups = {snappy = 3, flora = 1, flammable = 2, plant = 1},
@@ -17,6 +17,24 @@ minetest.register_node("chocolate:cocoa_plant", {
       minetest.item_place(itemstack, placer, pointed_thing)
     end
     return itemstack
+  end,
+  on_destruct = function(pos)
+    print("destruction")
+    if minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z}).name == "chocolate:cocoa_plant" 
+    or minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z}).name == "chocolate:cocoa_plant_top"
+    or minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z}).name == "chocolate:cocoa_plant_top_grown" then
+      minetest.dig_node({x = pos.x, y = pos.y+1, z = pos.z})
+    end
+    if minetest.get_node({x = pos.x, y = pos.y+2, z = pos.z}).name == "chocolate:cocoa_plant" 
+    or minetest.get_node({x = pos.x, y = pos.y+2, z = pos.z}).name == "chocolate:cocoa_plant_top"
+    or minetest.get_node({x = pos.x, y = pos.y+2, z = pos.z}).name == "chocolate:cocoa_plant_top_grown"  then
+      minetest.dig_node({x = pos.x, y = pos.y+2, z = pos.z})
+    end
+    if minetest.get_node({x = pos.x, y = pos.y+3, z = pos.z}).name == "chocolate:cocoa_plant" 
+    or minetest.get_node({x = pos.x, y = pos.y+3, z = pos.z}).name == "chocolate:cocoa_plant_top"
+    or minetest.get_node({x = pos.x, y = pos.y+3, z = pos.z}).name == "chocolate:cocoa_plant_top_grown" then
+      minetest.dig_node({x = pos.x, y = pos.y+3, z = pos.z})
+    end
   end
 })
 
@@ -51,8 +69,8 @@ minetest.register_node("chocolate:cocoa_plant_top_grown", {
 
 minetest.register_abm({
   nodenames = {"chocolate:cocoa_plant"},
-  interval = 15,
-  chance = 7,
+  interval = 60,
+  chance = 8,
   action = function(pos, node, active_object_count, active_object_count_wider)
     if (minetest.get_node({ x = pos.x, y = pos.y-1, z = pos.z}).name ~= "chocolate:cocoa_plant"
     or minetest.get_node({ x = pos.x, y = pos.y-2, z = pos.z}).name ~= "chocolate:cocoa_plant")
@@ -71,8 +89,8 @@ minetest.register_abm({
 
 minetest.register_abm({
   nodenames = {"chocolate:cocoa_plant_top"},
-  interval = 15,
-  chance = 6,
+  interval = 60,
+  chance = 8,
   action = function(pos, node, active_object_count, active_object_count_wider)
     minetest.set_node(pos, {name = "chocolate:cocoa_plant_top_grown"})
   end
